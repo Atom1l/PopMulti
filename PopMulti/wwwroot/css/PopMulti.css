@@ -1,0 +1,204 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-user-select:none;
+    user-select:none;
+}
+.section-popup {
+    width: 100%;
+    height: auto;
+}
+.gap-popup {
+    gap: 3rem;
+    transition: 0.3s ease;
+}
+.pop-intro-text{
+    font-size:4rem;
+    margin-bottom:20px;
+    transition: 0.3s ease;
+}
+.kmutt-pic {
+    width: 250px;
+    height: 250px;
+    transition: 0.3s ease;
+}
+.su-pic {
+    width: 225px;
+    height: 225px;
+    transition: 0.3s ease;
+}
+.swu-pic {
+    width: 220px;
+    height: 220px;
+    transition: 0.3s ease;
+}
+.btn-uni-kmutt {
+    padding: 0;
+    background-color: #f3f3f3;
+    border: solid 2px #e5e5e5;
+    border-radius: 25px;
+    transition: 0.3s ease;
+}
+.btn-uni-su {
+    padding: 12.5px;
+    background-color: #f3f3f3;
+    border: solid 2px #e5e5e5;
+    border-radius: 25px;
+    transition: 0.3s ease;
+}
+.btn-uni-swu {
+    padding: 15px;
+    background-color: #f3f3f3;
+    border: solid 2px #e5e5e5;
+    border-radius: 25px;
+    transition: 0.3s ease;
+}
+.btn-uni-kmutt:hover, .btn-uni-su:hover, .btn-uni-swu:hover{
+    transform:scale(1.05);
+    transition: 0.3s ease;
+}
+
+@media(max-width:1200px){
+    .pop-intro-text {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+    }
+    .kmutt-pic {
+        width: 200px;
+        height: 200px;
+        transition: 0.3s ease;
+    }
+    .su-pic {
+        width: 175px;
+        height: 175px;
+        transition: 0.3s ease;
+    }
+    .swu-pic {
+        width: 170px;
+        height: 170px;
+        transition: 0.3s ease;
+    }
+}
+
+@media(max-width:767px){
+    .gap-popup {
+        gap: 2rem;
+    }
+    .pop-intro-text {
+        font-size: 2.5rem;
+        margin-bottom: 25px;
+    }
+    .kmutt-pic {
+        width: 150px;
+        height: 150px;
+    }
+    .su-pic {
+        width: 125px;
+        height: 125px;
+    }
+    .swu-pic {
+        width: 120px;
+        height: 120px;
+    }
+    .btn-uni-kmutt {
+        padding: 0;
+        background-color: #f3f3f3;
+        border: solid 2px #e5e5e5;
+        border-radius: 25px;
+        transition: 0.3s ease;
+    }
+    .btn-uni-su {
+        padding: 12.5px;
+        background-color: #f3f3f3;
+        border: solid 2px #e5e5e5;
+        border-radius: 25px;
+        transition: 0.3s ease;
+    }
+    .btn-uni-swu {
+        padding: 15px;
+        background-color: #f3f3f3;
+        border: solid 2px #e5e5e5;
+        border-radius: 25px;
+        transition: 0.3s ease;
+    }
+}
+
+
+/*===== POP-PAGE =====*/
+.section-popup{
+    width:100%;
+    height:100vh;
+    overflow:hidden;
+}
+.timer-text{
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: -15px;
+}
+.uni-text {
+    text-align: center;
+    font-size: 4rem;
+}
+.kmutt {
+    color: rgba(240,78,35,1);
+}
+.su {
+    color: rgba(0,116,104,1);
+}
+.swu {
+    color: rgba(218,33,39,1);
+}
+.score-text {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+#btn-pop-kmutt, #btn-pop-su, #btn-pop-swu{
+    background:none;
+    border:none;
+    outline:none;
+}
+#btn-pop-kmutt img, #btn-pop-su img, #btn-pop-swu img{
+    width:450px;
+    height:550px;
+}
+
+
+/*===== POP-RESULT =====*/
+.section-resultbox{
+    width: 100%;
+    height: 100vh;
+}
+.result-box{
+    width: 350px;
+    padding: 25px;
+    border: solid 4px black;
+}
+.score-header-text{
+    font-size: 4rem;
+    text-align: center;
+}
+.kmutt-score, .su-score, .swu-score{
+    border-bottom: solid 1px black;
+    margin: 10px 0px 10px 0px;
+    padding: 0px 5px 10px 5px;
+    font-size: 1.25rem;
+}
+.kmutt-score {
+    color: rgba(255, 102, 0, 1);
+}
+.su-score {
+    color: rgba(76, 175, 80, 1);
+}
+.swu-score {
+    color: rgba(218, 33, 40, 1);
+}

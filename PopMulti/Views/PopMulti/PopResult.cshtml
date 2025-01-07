@@ -1,0 +1,49 @@
+﻿@model PopMulti.Models.PopModel.PopMultiModel
+@{
+    Layout = "_Poplayout";
+}
+<link rel="stylesheet" href="/css/PopMulti.css" asp-append-version="true" />
+
+<div class="section-resultbox d-flex justify-content-center align-items-center gap-5">
+    <div class="result-box d-flex flex-column justify-content-center align-items-center text-start shadow">
+        <div class="score-header-text text-center kanit-bold">Score</div>
+        <canvas class="my-4 h-25 border border-dark" id="bar"></canvas>
+        <div class="kmutt-score w-100 d-flex flex-row justify-content-between align-items-center kanit-regular"><span class="kanit-bold">KMUTT</span> <span>@Model.KMUTT</span></div>
+        <div class="su-score w-100 d-flex flex-row justify-content-between align-items-center kanit-regular"><span class="kanit-bold">SU</span> <span>@Model.SU</span></div>
+        <div class="swu-score w-100 d-flex flex-row justify-content-between align-items-center kanit-regular"><span class="kanit-bold">SWU</span> <span>@Model.SWU</span></div>
+    </div>
+</div>
+
+<!-- Script for Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript">
+    // Get canvas context
+    var chart = document.getElementById('bar').getContext('2d');
+    // Create the bar chart //
+    var mychart = new Chart(chart, {
+        type: 'bar',
+        data: {
+            labels: ['KMUTT', 'SU', 'SWU'],
+            datasets: [{
+                label: 'Pop-Multi Scores',
+                data: [@Model.KMUTT, @Model.SU, @Model.SWU],
+                backgroundColor: ['rgba(240,78,35,0.5)', 'rgba(0,116,104,0.5)', 'rgba(218,33,39,0.5)'],
+                borderColor: ['rgba(240,78,35,1)', 'rgba(0,116,104,1)', 'rgba(218,33,39,1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
