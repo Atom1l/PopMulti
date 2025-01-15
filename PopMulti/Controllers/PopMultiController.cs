@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using PopMulti.Data;
+using PopMulti.Models.PopModel;
 
 namespace PopMulti.Controllers
 {
@@ -33,6 +34,10 @@ namespace PopMulti.Controllers
         public IActionResult KMUTTPOP()
         {
             var model = _db.PopMultiDB.FirstOrDefault();
+            if(model == null)
+            {
+                model = new PopMultiModel();
+            }
             return View(model);
         }
 
