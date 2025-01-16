@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('serviceConnectorResourceGroupName')]/providers/Microsoft.Web/sites/PopMultiResource/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsPopMultiConnectionStrin_D4C1D5F9C4",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/popmultidbserverr/databases/PopMulti_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:PopMultiConnectionString1",
+      "dynamicId": null
+    }
+  }
+}
