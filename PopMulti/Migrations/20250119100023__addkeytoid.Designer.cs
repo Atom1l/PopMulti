@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PopMulti.Data;
 
@@ -10,9 +11,11 @@ using PopMulti.Data;
 namespace PopMulti.Migrations
 {
     [DbContext(typeof(PopMultiDBContext))]
-    partial class PopMultiDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250119100023__addkeytoid")]
+    partial class _addkeytoid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

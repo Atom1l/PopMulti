@@ -20,7 +20,19 @@ namespace PopMulti.Controllers
         // MainPage //
         public IActionResult PopMulti()
         {
-            return View();
+            var model = _db.PopMultiDB.FirstOrDefault();
+            if (model == null)
+            {
+                model = new PopMultiModel
+                {
+                    KMUTT = 0,
+                    SU = 0,
+                    SWU = 0
+                };
+                _db.PopMultiDB.Add(model);
+                _db.SaveChanges();
+            }
+            return View(model);
         }
 
         // ResultPage //
@@ -34,10 +46,6 @@ namespace PopMulti.Controllers
         public IActionResult KMUTTPOP()
         {
             var model = _db.PopMultiDB.FirstOrDefault();
-            if(model == null)
-            {
-                model = new PopMultiModel();
-            }
             return View(model);
         }
 
