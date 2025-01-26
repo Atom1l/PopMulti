@@ -16,17 +16,20 @@
 
 <!-- Script for Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/microsoft/signalr@5.0.11/dist/browser/signalr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
 <script type="text/javascript">
-    // Get canvas context
+    // Get canvas context for chart on the result page
     var chart = document.getElementById('bar').getContext('2d');
-    // Create the bar chart //
+
+    // Initial chart setup
     var mychart = new Chart(chart, {
         type: 'bar',
         data: {
             labels: ['KMUTT', 'SU', 'SWU'],
             datasets: [{
                 label: 'Pop-Multi Scores',
-                data: [@Model.KMUTT, @Model.SU, @Model.SWU],
+                data: [@Model.KMUTT, @Model.SU, @Model.SWU], // Initialize with current model data
                 backgroundColor: ['rgba(240,78,35,0.5)', 'rgba(0,116,104,0.5)', 'rgba(218,33,39,0.5)'],
                 borderColor: ['rgba(240,78,35,1)', 'rgba(0,116,104,1)', 'rgba(218,33,39,1)'],
                 borderWidth: 1
@@ -46,4 +49,41 @@
             }
         }
     });
+
+    // Setup SignalR connection on the result page
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/scoreHub") // Match the hub route in your server setup
+        .build();
+
+    // Start the connection
+    connection.start()
+        .then(() => console.log("SignalR connection established."))
+        .catch(err => {
+            console.error("SignalR connection error: ", err);
+        });
+
+    // Listen for score updates
+    connection.on("ReceiveScoreUpdate", function (university, newScore) {
+        if (university === "KMUTT") {
+            // Update the dataset with the new score for KMUTT
+            mychart.data.datasets[0].data[0] = newScore; // KMUTT is at index 0
+            // Update the KMUTT score text on the page
+            document.querySelector(".kmutt-score span:nth-child(2)").innerText = newScore;
+        } else if (university === "SU") {
+            mychart.data.datasets[0].data[1] = newScore; // SU is at index 1
+            // Update the SU score text on the page
+            document.querySelector(".su-score span:nth-child(2)").innerText = newScore;
+        } else if (university === "SWU") {
+            mychart.data.datasets[0].data[2] = newScore; // SWU is at index 2
+            // Update the SWU score text on the page
+            document.querySelector(".swu-score span:nth-child(2)").innerText = newScore;
+        }
+
+        // Update the chart with the new data
+        mychart.update();
+    });
+
 </script>
+
+
+

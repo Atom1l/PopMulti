@@ -2,8 +2,7 @@
   "dependencies": {
     "mssql1": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:PopMultiConnectionString1",
-      "dynamicId": null
+      "connectionId": "ConnectionStrings:DatabaseConnection"
     }
   }
 }

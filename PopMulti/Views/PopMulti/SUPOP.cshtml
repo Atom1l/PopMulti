@@ -6,20 +6,18 @@
 
 <div class="container-fluid section-popup d-flex flex-column justify-content-center align-items-center">
     <div id="timer-display" class="timer-text kanit-bold text-danger">Time Left: 10s</div>
-    <div class="uni-text su kanit-bold">SU</></div>
-    <div class="score-text kanit-bold">Score :<span id="score-text" class="score-text kanit-regular"> @Model.SU.ToString()</span></></div>
-    <form asp-action="SUPOP" method="post"><button id="btn-pop-su" name="subtn"><img id="pop-su-multi" class="img-fluid" src="/pic/pop-close.png" alt="pop-closed" /></button></form>
+    <div class="uni-text su kanit-bold">SU</div> <!-- Changed KMUTT to SU -->
+    <div class="score-text kanit-bold">Score :<span id="score-text" class="score-text kanit-regular"> @Model.SU.ToString()</span></div> <!-- Changed KMUTT to SU -->
+    <form asp-action="SUPOP" method="post"><button id="btn-pop-su" name="subtn"><img id="pop-su-multi" class="img-fluid" src="/pic/pop-close.png" alt="pop-closed" /></button></form> <!-- Changed button id to btn-pop-su -->
 </div>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script> <!--AJAX for no refreshing the page-->
 <script src="/js/pop-su.js" asp-append-version="true"></script> <!-- For Popcat animation -->
-<!-- Script working with SignalR for real time change the score to many devices -->
-<!-- With the time limit and push the button script to + the score -->
 <script>
+    // Setup SignalR connection
     const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/scoreHub") // Match the hub route in your server setup
-    .build();
+        .withUrl("/scoreHub") // Match the hub route in your server setup
+        .build();
 
     // Start the connection
     connection.start()
@@ -27,57 +25,56 @@
         .catch(err => console.error("SignalR Connection Error: ", err));
 
     // Listen for score updates
-    connection.on("ReceiveScoreUpdate", function (newScore) {
-        document.querySelector("#score-text").textContent = newScore;
+    connection.on("ReceiveScoreUpdate", function (university, newScore) {
+        if (university === "SU") {
+            document.querySelector("#score-text").textContent = newScore;
+        }
     });
 
-    const button = document.getElementById('btn-pop-su');
+    // Listen for score limit reached event
+    connection.on("ScoreLimitReached", function (university) {
+    console.log(`${university} score limit reached! Redirecting...`);
+    // Check for any university reaching the limit and redirect
+    if (university === "KMUTT") {
+        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for KMUTT
+    } else if (university === "SU") {
+        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for UniversityA
+    } else if (university === "SWU") {
+        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for UniversityB
+    }
+    });
+
+    const buttonSU = document.getElementById('btn-pop-su');
     const timerDisplay = document.getElementById('timer-display');
 
-    let timeLeft = 10; // Total game time in seconds
     let isGameActive = false;
 
     const startGame = () => {
         isGameActive = true;
-        button.disabled = false;
-        timeLeft = 10; // Reset the timer
-
-        const gameInterval = setInterval(() => {
-            timeLeft -= 1;
-            timerDisplay.textContent = `Time Left: ${timeLeft}s`;
-
-            if (timeLeft <= 0) {
-                clearInterval(gameInterval);
-                endGame();
-            }
-        }, 1000);
+        buttonSU.disabled = false;
+        timerDisplay.textContent = "Game Started!"; // Update UI to indicate the game is active
     };
 
     const endGame = () => {
         isGameActive = false;
-        button.disabled = true;
-        timerDisplay.textContent = 'Time is up!';
-
-        // Redirect to another page after the game ends
-        setTimeout(() => {
-            window.location.href = '@Url.Action("PopResult", "PopMulti")';
-        }, 2000);
+        buttonSU.disabled = true;
+        timerDisplay.textContent = "Game Ended!";
     };
 
-    // Handle button click
-    button.addEventListener('click', function (e) {
+    // Handle KMUTT button click
+    buttonSU.addEventListener('click', function (e) {
         e.preventDefault();
 
         if (!isGameActive) return; // Ignore clicks if the game is not active
 
+        // Send a POST request to update the score for KMUTT
         fetch('@Url.Action("SUPOP", "PopMulti")', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ kmuttbtn: 1 })
+            body: JSON.stringify({ university: "SU", score: 1 })
         }).catch(error => console.error('Error:', error));
     });
-
     // Start the game automatically when the page loads
     startGame();
-
 </script>
+
