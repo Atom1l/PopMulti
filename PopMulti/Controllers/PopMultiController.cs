@@ -36,20 +36,46 @@ namespace PopMulti.Controllers
         }
 
         // ResultPage //
-        public IActionResult PopResult()
+        public IActionResult PopResult() // /PopMulti/PopResult //
+        {
+            var model = _db.PopMultiDB.FirstOrDefault();
+            return View(model);
+        }
+        public IActionResult PopBigResult() // /PopMulti/PopBigResult //
         {
             var model = _db.PopMultiDB.FirstOrDefault();
             return View(model);
         }
 
-        // KMUTTPOP (GET)
+        // ResetPage //
+        [HttpGet]
+        public IActionResult PopReset() // /PopMulti/PopReset //
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult PopReset(int id)
+        {
+            var model = _db.PopMultiDB.FirstOrDefault(pop => pop.Id == id);
+            if(model != null) // To Reset the score of each universities //
+            {
+                model.KMUTT = 0;
+                model.SU = 0;
+                model.SWU = 0;
+            }
+            _db.SaveChanges();
+            
+            return RedirectToAction("PopMulti");
+        }
+
+        // KMUTTPOP (GET) //
         public IActionResult KMUTTPOP()
         {
             var model = _db.PopMultiDB.FirstOrDefault();
             return View(model);
         }
 
-        // KMUTTPOP (POST)
+        // KMUTTPOP (POST) //
         [HttpPost]
         public async Task<IActionResult> KMUTTPOP(int kmuttbtn)
         {
@@ -59,20 +85,20 @@ namespace PopMulti.Controllers
                 record.KMUTT += 1;
                 _db.SaveChanges();
 
-                // Broadcast the updated score for KMUTT to all connected clients
+                // Broadcast the updated score for KMUTT to all connected clients(SU,SWU) //
                 await _hubContext.Clients.All.SendAsync("ReceiveScoreUpdate", "KMUTT", record.KMUTT);
 
-                // Check if the score for KMUTT has reached the limit
-                const int ScoreLimit = 50; // Adjust the limit as needed
+                // Check if the score for KMUTT has reached the limit //
+                const int ScoreLimit = 50;
                 if (record.KMUTT >= ScoreLimit)
                 {
-                    // Notify all clients that the KMUTT score limit has been reached
+                    // Notify all clients that the KMUTT score limit has been reached //
+                    // Then proceed to navigate all the page to PopResult page //
                     await _hubContext.Clients.All.SendAsync("ScoreLimitReached", "KMUTT");
                 }
             }
             return Ok(new { success = true });
         }
-
 
         // SUPOP //
         public IActionResult SUPOP()
@@ -90,14 +116,12 @@ namespace PopMulti.Controllers
                 record.SU += 1;
                 _db.SaveChanges();
 
-                // Broadcast the updated score for KMUTT to all connected clients
+                // Same as KMUTT method //
                 await _hubContext.Clients.All.SendAsync("ReceiveScoreUpdate", "SU", record.SU);
 
-                // Check if the score for KMUTT has reached the limit
-                const int ScoreLimit = 50; // Adjust the limit as needed
+                const int ScoreLimit = 50;
                 if (record.SU >= ScoreLimit)
                 {
-                    // Notify all clients that the KMUTT score limit has been reached
                     await _hubContext.Clients.All.SendAsync("ScoreLimitReached", "SU");
                 }
             }
@@ -120,14 +144,12 @@ namespace PopMulti.Controllers
                 record.SWU += 1;
                 _db.SaveChanges();
 
-                // Broadcast the updated score for KMUTT to all connected clients
+                // Same as KMUTT,SU method //
                 await _hubContext.Clients.All.SendAsync("ReceiveScoreUpdate", "SWU", record.SWU);
 
-                // Check if the score for KMUTT has reached the limit
-                const int ScoreLimit = 50; // Adjust the limit as needed
+                const int ScoreLimit = 50; 
                 if (record.SWU >= ScoreLimit)
                 {
-                    // Notify all clients that the KMUTT score limit has been reached
                     await _hubContext.Clients.All.SendAsync("ScoreLimitReached", "SU");
                 }
             }

@@ -4,22 +4,21 @@
 }
 <link rel="stylesheet" href="/css/PopMulti.css" asp-append-version="true" />
 
-<div class="container-fluid section-popup d-flex flex-column justify-content-center align-items-center">
-    <div id="timer-display" class="timer-text kanit-bold text-danger">Time Left: 10s</div>
-    <div class="uni-text kmutt kanit-bold">KMUTT</></div>
-    <div class="score-text kanit-bold">Score : <span id="score-text" class="score-text kanit-regular">@Model.KMUTT.ToString()</span></></div>
-    <form asp-action="KMUTTPOP" method="post"><button id="btn-pop-kmutt" name="kmuttbtn"><img id="pop-kmutt-multi" class="img-fluid" src="/pic/pop-close.png" alt="pop-closed" /></button></form>
+<div class="kmutt-bg">
+    <div class="container-fluid section-popup d-flex flex-column justify-content-center align-items-center">
+        <div class="uni-text kmutt kanit-bold">KMUTT</></div>
+        <div class="score-text kanit-bold">Score : <span id="score-text" class=" kanit-regular">@Model.KMUTT.ToString()</span></></div>
+        <form class="pop-form" asp-action="KMUTTPOP" method="post"><button id="btn-pop-kmutt" name="kmuttbtn"><img id="pop-kmutt-multi" class="img-fluid" src="/pic/Cmm1.png" alt="pop-closed" /></button></form>
+    </div>
 </div>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script> <!--AJAX for no refreshing the page-->
 <script src="/js/pop-kmutt.js" asp-append-version="true"></script> <!-- For Popcat animation -->
 <!-- Script working with SignalR for real time change the score to many devices -->
-<!-- With the time limit and push the button script to + the score -->
 <script>
     // Setup SignalR connection
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/scoreHub") // Match the hub route in your server setup
+        .withUrl("/scoreHub")
         .build();
 
     // Start the connection
@@ -27,41 +26,39 @@
         .then(() => console.log("Connected to SignalR"))
         .catch(err => console.error("SignalR Connection Error: ", err));
 
-    // Listen for score updates
+    // Listen for score updates meaning the real-time score update for all device using this page at the moment
     connection.on("ReceiveScoreUpdate", function (university, newScore) {
         if (university === "KMUTT") {
             document.querySelector("#score-text").textContent = newScore;
         }
     });
 
-    // Listen for score limit reached event
+    // Listen for score limit 
     connection.on("ScoreLimitReached", function (university) {
     console.log(`${university} score limit reached! Redirecting...`);
     // Check for any university reaching the limit and redirect
+    // Need to have all of the universities bc to make sure that every page will navigate to the result when score is reach the limit
     if (university === "KMUTT") {
         window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for KMUTT
     } else if (university === "SU") {
-        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for UniversityA
+        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for SU
     } else if (university === "SWU") {
-        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for UniversityB
+        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for SWU
     }
     });
 
     const buttonKmutt = document.getElementById('btn-pop-kmutt');
-    const timerDisplay = document.getElementById('timer-display');
 
     let isGameActive = false;
 
     const startGame = () => {
         isGameActive = true;
         buttonKmutt.disabled = false;
-        timerDisplay.textContent = "Game Started!"; // Update UI to indicate the game is active
     };
 
     const endGame = () => {
         isGameActive = false;
         buttonKmutt.disabled = true;
-        timerDisplay.textContent = "Game Ended!";
     };
 
     // Handle KMUTT button click

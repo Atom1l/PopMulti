@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "_Poplayout";
+}
+
+<link rel="stylesheet" href="/css/PopMulti.css" asp-append-version="true" />
+
+<div class="section-popup d-flex flex-column justify-content-center align-items-center">
+    <form asp-action="PopReset" method="post">
+        <input type="hidden" name="id" value="1" />
+        <input class="resetbtn" type="submit" name="resetbtn" value="Reset" />
+    </form>
+</div>
+

@@ -11,9 +11,15 @@ html, body {
     -webkit-user-select:none;
     user-select:none;
 }
+.main-page {
+    background-color: white;
+}
+
 .section-popup {
+    position: relative;
     width: 100vw;
-    height: 100dvh;
+    height: auto;
+    overflow:hidden;
     animation: Pop-up 1.5s ease-in-out;
 }
 @keyframes Pop-up{
@@ -31,6 +37,7 @@ html, body {
     transition: 0.3s ease;
 }
 .pop-intro-text{
+    color:black;
     font-size:4rem;
     margin-bottom:20px;
     transition: 0.3s ease;
@@ -52,28 +59,32 @@ html, body {
 }
 .btn-uni-kmutt {
     padding: 0;
-    background-color: #f3f3f3;
+    background-color: white;
     border: solid 2px #e5e5e5;
     border-radius: 25px;
     transition: 0.3s ease;
 }
 .btn-uni-su {
     padding: 12.5px;
-    background-color: #f3f3f3;
+    background-color: white;
     border: solid 2px #e5e5e5;
     border-radius: 25px;
     transition: 0.3s ease;
 }
 .btn-uni-swu {
     padding: 15px;
-    background-color: #f3f3f3;
+    background-color: white;
     border: solid 2px #e5e5e5;
     border-radius: 25px;
     transition: 0.3s ease;
 }
 .btn-uni-kmutt:focus, .btn-uni-su:focus, .btn-uni-swu:focus{
+    background:white;
     transform:scale(1.05);
     transition: 0.3s ease;
+}
+.btn-uni-kmutt:hover, .btn-uni-su:hover, .btn-uni-swu:hover {
+    background-color: white;
 }
 
 @media(max-width:1200px){
@@ -151,7 +162,7 @@ html, body {
 /*===== POP-PAGE =====*/
 .section-popup{
     width:100%;
-    height:100vh;
+    height:100dvh;
     overflow:hidden;
 }
 .timer-text{
@@ -160,43 +171,202 @@ html, body {
     margin-bottom: -15px;
 }
 .uni-text {
+    margin-top:-500px;
     text-align: center;
     font-size: 4rem;
+    transition:0.5s ease-in-out;
 }
 .kmutt {
-    color: rgba(240,78,35,1);
+    color: white;
+}
+.kmutt-bg {
+    background-color: rgba(240,78,35,1);
 }
 .su {
-    color: rgba(0,116,104,1);
+    color: white;
+}
+.su-bg {
+    background-color: rgba(0,116,104,1);
 }
 .swu {
-    color: rgba(218,33,39,1);
+    color: white;
+}
+.swu-bg {
+    background-color: rgba(218,33,39,1);
 }
 .score-text {
+    color: white;
     text-align: center;
     font-size: 2rem;
     margin-bottom: 30px;
+    transition: 0.5s ease-in-out;
+}
+.pop-form{
+    width:100%;
+    display:flex; 
+    justify-content:center;
+    align-items:center;
 }
 #btn-pop-kmutt, #btn-pop-su, #btn-pop-swu{
+    position:absolute;
+    bottom:250px;
     background:none;
     border:none;
     outline:none;
+    transform:scale(1.4);
+    transition:0.5s ease-in-out;
 }
-#btn-pop-kmutt img, #btn-pop-su img, #btn-pop-swu img{
-    width:450px;
-    height:550px;
+#btn-pop-kmutt img, #btn-pop-su img{
+    width:350px;
+    height:300px;
+    overflow:visible;
+    border-radius:50%;
 }
+#btn-pop-swu img{
+    margin-top:300px;
+    width:370px;
+    height:350px;
+    overflow:visible;
+    border-radius:50%;
+}
+@media(min-height:961px) {
+    #btn-pop-kmutt, #btn-pop-su, #btn-pop-swu {
+        bottom: 25%;
+    }
+}
+@media(max-height:960px){
+    #btn-pop-kmutt, #btn-pop-su, #btn-pop-swu {
+        bottom:20%;
+        transform: scale(1.1)
+    }
+}
+@media(max-height:810px) {
+    .uni-text {
+        margin-top: -500px;
+    }
 
+    #btn-pop-kmutt, #btn-pop-su, #btn-pop-swu {
+        transform: scale(1.0)
+    }
+    #btn-pop-swu {
+        bottom: 20%;
+    }
+}
+@media(max-height:710px) {
+    .uni-text {
+        margin-top: -400px;
+    }
+    #btn-pop-kmutt{
+        bottom:150px;
+    }
+    #btn-pop-swu {
+        bottom: 100px;
+    }
+
+}
+@media(max-height:610px) {
+    .uni-text {
+        margin-top: -300px;
+    }
+    #btn-pop-kmutt {
+        bottom: 50px;
+        transform: scale(0.9);
+    }
+    #btn-pop-swu {
+        bottom: 0px;
+        transform: scale(0.9);
+    }
+    #btn-pop-su{
+        bottom: -50px;
+        transform: scale(0.9);
+    }
+}
+@media(max-height:500px) {
+    .uni-text {
+        margin-top: -300px;
+    }
+    #btn-pop-kmutt {
+        bottom: 20px;
+        transform: scale(0.7);
+    }
+    #btn-pop-swu {
+        bottom: -50px;
+        transform: scale(0.7);
+    }
+    #btn-pop-su{
+        bottom: -80px;
+        transform: scale(0.7);
+    }
+}
+@media(max-height:470px) {
+    .uni-text {
+        margin-top: -250px;
+    }
+    #btn-pop-kmutt {
+        bottom: 0px;
+        transform:scale(0.7)
+    }
+    #btn-pop-swu {
+        bottom: -80px;
+        transform: scale(0.7)
+    }
+    #btn-pop-su{
+        bottom: -100px;
+        transform: scale(0.6);
+    }
+}
+@media(max-height:400px) {
+    .uni-text {
+        font-size:3rem;
+        margin-bottom: -15px !important;
+        margin-top: -200px;
+    }
+    #btn-pop-kmutt {
+        bottom: 0px;
+        transform: scale(0.5);
+    }
+    #btn-pop-swu {
+        bottom: -115px;
+        transform: scale(0.5);
+    }
+    #btn-pop-su{
+        bottom: -120px;
+        transform: scale(0.5);
+    }
+}
+@media(max-height:315px) {
+    .uni-text {
+        font-size: 3rem;
+        margin-bottom: -20px !important;
+        margin-top: -170px;
+    }
+    #btn-pop-kmutt {
+        bottom: -40px;
+        transform: scale(0.4);
+    }
+    #btn-pop-swu {
+        bottom: -160px;
+        transform: scale(0.4);
+    }
+    #btn-pop-su{
+        bottom: -140px;
+        transform: scale(0.4);
+    }
+}
 
 /*===== POP-RESULT =====*/
-.section-resultbox{
+.section-resultbox {
     width: 100%;
     height: 100vh;
+    animation: Pop-up 1.5s ease-in-out;
 }
 .result-box{
     width: 350px;
     padding: 25px;
     border: solid 4px black;
+}
+.canvas{
+    transition: 1.5s ease-in-out;
 }
 .score-header-text{
     font-size: 4rem;
@@ -216,4 +386,37 @@ html, body {
 }
 .swu-score {
     color: rgba(218, 33, 40, 1);
+}
+
+/*===== POP-RESET =====*/
+.resetbtn{
+    color:white;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 30px 50px 30px 50px;
+    border: none;
+    border-radius: 15px;
+    background-color: red;
+    box-shadow: 0px 5px 15px #8f8f8f;
+    transform: scale(2.5);
+    transition: 0.5s ease;
+}
+.resetbtn:focus{
+    transform: scale(2.35);
+}
+@media(max-width:575px){
+    .resetbtn{
+        transform:scale(2)
+    }
+    .resetbtn:focus{
+    transform: scale(1.85);
+    }
+}
+@media(max-width:375px) {
+    .resetbtn {
+        transform: scale(1.5)
+    }
+    .resetbtn:focus {
+        transform: scale(1.35);
+    }
 }

@@ -4,13 +4,22 @@
 
 <link rel="stylesheet" href="/css/PopMulti.css" asp-append-version="true"/>
 
-<div class="section-popup d-flex flex-column justify-content-center align-items-center">
-    <a asp-action="PopResult" asp-controller="PopMulti">Result</a>
-    <div class="pop-intro-text kanit-bold">เลือกมหาวิทยาลัยของคุณ</div>
-    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-popup">
-        <a asp-action="KMUTTPOP"><div tabindex="0" class="btn btn-uni-kmutt shadow"><img class="kmutt-pic" src="/pic/KMUTT.png" alt="KMUTT" /></div></a>
-        <a asp-action="SUPOP"><div tabindex="1" class="btn btn-uni-su shadow"><img class="su-pic" src="/pic/SU.png" alt="SU" /></div></a>
-        <a asp-action="SWUPOP"><div tabindex="2" class="btn btn-uni-swu shadow"><img class="swu-pic" src="/pic/SWU.png" alt="SWU" /></div></a>
+<div class="main-page">
+    <div class="section-popup d-flex flex-column justify-content-center align-items-center">
+
+        @* <div class="d-flex flex-row justify-content-center align-items-center gap-5"> *@
+        @*     <!-- Result & Reset --> *@
+        @*     <a asp-action="PopResult" asp-controller="PopMulti">Result</a> *@
+        @*     <a asp-action="PopBigResult" asp-controller="PopMulti">ResultLive</a> *@
+        @*     <a asp-action="PopReset" asp-controller="PopMulti">Reset</a> *@
+        @* </div> *@
+
+        <div class="pop-intro-text kanit-bold">เลือกมหาวิทยาลัยของคุณ</div>
+        <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-popup">
+            <a asp-action="KMUTTPOP"><div tabindex="0" class="btn btn-uni-kmutt shadow"><img class="kmutt-pic" src="/pic/KMUTT.png" alt="KMUTT" /></div></a>
+            <a asp-action="SUPOP"><div tabindex="1" class="btn btn-uni-su shadow"><img class="su-pic" src="/pic/SU.png" alt="SU" /></div></a>
+            <a asp-action="SWUPOP"><div tabindex="2" class="btn btn-uni-swu shadow"><img class="swu-pic" src="/pic/SWU.png" alt="SWU" /></div></a>
+        </div>
     </div>
 </div>
 

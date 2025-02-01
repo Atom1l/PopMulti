@@ -4,11 +4,12 @@
 }
 <link rel="stylesheet" href="/css/PopMulti.css" asp-append-version="true" />
 
-<div class="container-fluid section-popup d-flex flex-column justify-content-center align-items-center">
-    <div id="timer-display" class="timer-text kanit-bold text-danger">Time Left: 10s</div>
-    <div class="uni-text su kanit-bold">SU</div> <!-- Changed KMUTT to SU -->
-    <div class="score-text kanit-bold">Score :<span id="score-text" class="score-text kanit-regular"> @Model.SU.ToString()</span></div> <!-- Changed KMUTT to SU -->
-    <form asp-action="SUPOP" method="post"><button id="btn-pop-su" name="subtn"><img id="pop-su-multi" class="img-fluid" src="/pic/pop-close.png" alt="pop-closed" /></button></form> <!-- Changed button id to btn-pop-su -->
+<div class="su-bg">
+    <div class="container-fluid section-popup d-flex flex-column justify-content-center align-items-center">
+        <div class="uni-text su kanit-bold">SU</div> <!-- Changed KMUTT to SU -->
+        <div class="score-text kanit-bold">Score :<span id="score-text" class="score-text kanit-regular"> @Model.SU.ToString()</span></div> <!-- Changed KMUTT to SU -->
+        <form class="pop-form" asp-action="SUPOP" method="post"><button id="btn-pop-su" name="subtn"><img id="pop-su-multi" class="img-fluid" src="/pic/ICT1.png" alt="pop-closed" /></button></form> <!-- Changed button id to btn-pop-su -->
+    </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script> <!--AJAX for no refreshing the page-->
@@ -45,29 +46,26 @@
     });
 
     const buttonSU = document.getElementById('btn-pop-su');
-    const timerDisplay = document.getElementById('timer-display');
 
     let isGameActive = false;
 
     const startGame = () => {
         isGameActive = true;
         buttonSU.disabled = false;
-        timerDisplay.textContent = "Game Started!"; // Update UI to indicate the game is active
     };
 
     const endGame = () => {
         isGameActive = false;
         buttonSU.disabled = true;
-        timerDisplay.textContent = "Game Ended!";
     };
 
-    // Handle KMUTT button click
+    // Handle SU button click
     buttonSU.addEventListener('click', function (e) {
         e.preventDefault();
 
         if (!isGameActive) return; // Ignore clicks if the game is not active
 
-        // Send a POST request to update the score for KMUTT
+        // Send a POST request to update the score for SU
         fetch('@Url.Action("SUPOP", "PopMulti")', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

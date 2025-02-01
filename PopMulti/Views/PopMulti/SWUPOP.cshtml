@@ -4,11 +4,12 @@
 }
 <link rel="stylesheet" href="/css/PopMulti.css" asp-append-version="true" />
 
-<div class="container-fluid section-popup d-flex flex-column justify-content-center align-items-center">
-    <div id="timer-display" class="timer-text kanit-bold text-danger">Time Left: 10s</div>
-    <div class="uni-text swu kanit-bold">SWU</></div>
-    <div class="score-text kanit-bold">Score :<span id="score-text" class="score-text kanit-regular"> @Model.SWU.ToString()</span></></div>
-    <form asp-action="SWUPOP" method="post"><button id="btn-pop-swu" name="swubtn"><img id="pop-swu-multi" class="img-fluid" src="/pic/pop-close.png" alt="pop-closed" /></button></form>
+<div class="swu-bg">
+    <div class="container-fluid section-popup d-flex flex-column justify-content-center align-items-center">
+        <div class="uni-text swu kanit-bold">SWU</></div>
+        <div class="score-text kanit-bold">Score :<span id="score-text" class="score-text kanit-regular"> @Model.SWU.ToString()</span></></div>
+        <form class="pop-form" asp-action="SWUPOP" method="post"><button id="btn-pop-swu" name="swubtn"><img id="pop-swu-multi" class="img-fluid" src="/pic/Swu1.png" alt="pop-closed" /></button></form>
+    </div>
 </div>
 
 
@@ -48,29 +49,26 @@
     });
 
     const buttonSWU = document.getElementById('btn-pop-swu');
-    const timerDisplay = document.getElementById('timer-display');
 
     let isGameActive = false;
 
     const startGame = () => {
         isGameActive = true;
         buttonSWU.disabled = false;
-        timerDisplay.textContent = "Game Started!"; // Update UI to indicate the game is active
     };
 
     const endGame = () => {
         isGameActive = false;
         buttonSWU.disabled = true;
-        timerDisplay.textContent = "Game Ended!";
     };
 
-    // Handle KMUTT button click
+    // Handle SWU button click
     buttonSWU.addEventListener('click', function (e) {
         e.preventDefault();
 
         if (!isGameActive) return; // Ignore clicks if the game is not active
 
-        // Send a POST request to update the score for KMUTT
+        // Send a POST request to update the score for SWU
         fetch('@Url.Action("SWUPOP", "PopMulti")', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
