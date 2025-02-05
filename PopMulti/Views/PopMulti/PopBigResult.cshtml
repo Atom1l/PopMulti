@@ -13,7 +13,6 @@
 <script src="https://cdn.jsdelivr.net/npm/microsoft/signalr@5.0.11/dist/browser/signalr.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
 <script type="text/javascript">
-    // Get canvas context for chart on the result page
     var chart = document.getElementById('bar').getContext('2d');
     var mychart = new Chart(chart, {
         type: 'bar',
@@ -21,23 +20,24 @@
             labels: ['KMUTT', 'SU', 'SWU'],
             datasets: [{
                 label: 'Pop-Multi Scores',
-                data: [@Model.KMUTT, @Model.SU, @Model.SWU], // Replace with valid numeric data
+                data: [@Model.KMUTT, @Model.SU, @Model.SWU],
                 backgroundColor: ['rgba(240,78,35,0.5)', 'rgba(0,116,104,0.5)', 'rgba(218,33,39,0.5)'],
                 borderColor: ['rgba(240,78,35,1)', 'rgba(0,116,104,1)', 'rgba(218,33,39,1)'],
-                borderWidth: 1
+                borderWidth: 1,
+                barPercentage: 0.6,         // ปรับขนาดความกว้างของแท่ง
+                categoryPercentage: 0.8     // ควบคุมพื้นที่แสดงแท่ง
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true, // Keeps chart responsive
+            maintainAspectRatio: false,  // ให้กราฟปรับเต็มหน้าจอได้ตามต้องการ
             plugins: {
                 legend: {
                     labels: {
                         font: {
                             size: function (context) {
-                                // Dynamically calculate font size based on chart width
                                 let width = context.chart.width;
-                                return width < 500 ? 12 : 30; // Smaller font for smaller screens
+                                return width < 500 ? 12 : 30;
                             }
                         }
                     }
@@ -63,49 +63,44 @@
                         font: {
                             size: function (context) {
                                 let width = context.chart.width;
-                                return width < 500 ? 10 : 26; // Adjust font size based on width
+                                return width < 500 ? 10 : 26;
                             }
                         }
                     }
                 },
                 y: {
+                    beginAtZero: true, // ให้กราฟเริ่มจาก 0
+                    max: 50,           // กำหนดค่าสูงสุดตรงกับ ScoreLimit
                     ticks: {
+                        stepSize: 5,   // ให้แสดงค่าขั้นบันไดทีละ 5 เพื่อดูง่ายขึ้น
                         font: {
                             size: function (context) {
                                 let width = context.chart.width;
-                                return width < 500 ? 10 : 26; // Adjust font size based on width
+                                return width < 500 ? 10 : 26;
                             }
-                        },
-                        beginAtZero: true
+                        }
                     }
                 }
             }
         }
     });
 
-    // Setup SignalR connection on the result page
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/scoreHub")
         .build();
 
-    // Start the connection
     connection.start()
-        .then(() => console.log("Connected to SignalR")) // If successfully connected will show in console log with this line //
+        .then(() => console.log("Connected to SignalR"))
         .catch(err => console.error("SignalR Connection Error: ", err));
 
-    // Listen for score updates
     connection.on("ReceiveScoreUpdate", function (university, newScore) {
-        if (university === "KMUTT") { // Update real-time score for KMUTT
-            mychart.data.datasets[0].data[0] = newScore; // KMUTT is at index 0 in dataset
-        }
-        else if (university === "SU") { // Update real-time score for SU
+        if (university === "KMUTT") {
+            mychart.data.datasets[0].data[0] = newScore;
+        } else if (university === "SU") {
             mychart.data.datasets[0].data[1] = newScore;
-        }
-        else if (university === "SWU") { // Update real-time score for SWU
+        } else if (university === "SWU") {
             mychart.data.datasets[0].data[2] = newScore;
         }
-
-        // Update the chart with the new data( Scores update )
         mychart.update();
     });
 </script>
