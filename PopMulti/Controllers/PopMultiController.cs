@@ -69,9 +69,10 @@ namespace PopMulti.Controllers
         }
 
         // KMUTTPOP (GET) //
-        public IActionResult KMUTTPOP()
+        public async Task<IActionResult> KMUTTPOP()
         {
             var model = _db.PopMultiDB.FirstOrDefault();
+            await _hubContext.Clients.All.SendAsync("Redirect");
             return View(model);
         }
 
@@ -89,7 +90,7 @@ namespace PopMulti.Controllers
                 await _hubContext.Clients.All.SendAsync("ReceiveScoreUpdate", "KMUTT", record.KMUTT);
 
                 // Check if the score for KMUTT has reached the limit //
-                const int ScoreLimit = 50;
+                const int ScoreLimit = 20;
                 if (record.KMUTT >= ScoreLimit)
                 {
                     // Notify all clients that the KMUTT score limit has been reached //
@@ -119,7 +120,7 @@ namespace PopMulti.Controllers
                 // Same as KMUTT method //
                 await _hubContext.Clients.All.SendAsync("ReceiveScoreUpdate", "SU", record.SU);
 
-                const int ScoreLimit = 50;
+                const int ScoreLimit = 20;
                 if (record.SU >= ScoreLimit)
                 {
                     await _hubContext.Clients.All.SendAsync("ScoreLimitReached", "SU");
@@ -147,7 +148,7 @@ namespace PopMulti.Controllers
                 // Same as KMUTT,SU method //
                 await _hubContext.Clients.All.SendAsync("ReceiveScoreUpdate", "SWU", record.SWU);
 
-                const int ScoreLimit = 50; 
+                const int ScoreLimit = 20; 
                 if (record.SWU >= ScoreLimit)
                 {
                     await _hubContext.Clients.All.SendAsync("ScoreLimitReached", "SU");

@@ -18,6 +18,8 @@
 <!-- Script working with SignalR for real time change the score to many devices -->
 <!-- With the time limit and push the button script to + the score -->
 <script>
+    const thescorelimit = 20;
+    let currentScore = parseInt(document.querySelector("#score-text").textContent, 10);
     // Setup SignalR connection
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/scoreHub") // Match the hub route in your server setup
@@ -63,18 +65,24 @@
     };
 
     // Handle SWU button click
-    buttonSWU.addEventListener('click', function (e) {
+    const handleScoreUpdate = (e) => {
         e.preventDefault();
 
-        if (!isGameActive) return; // Ignore clicks if the game is not active
+        if (!isGameActive) return; // Ignore if the game is not active
 
-        // Send a POST request to update the score for SWU
+        // Send a POST request to update the score for KMUTT
         fetch('@Url.Action("SWUPOP", "PopMulti")', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ university: "SWU", score: 1 })
         }).catch(error => console.error('Error:', error));
-    });
+    };
+    // Add event listeners
+    if ('ontouchstart' in window) {
+        buttonSWU.addEventListener('touchstart', handleScoreUpdate);
+    } else {
+        buttonSWU.addEventListener('click', handleScoreUpdate);
+    }
     // Start the game automatically when the page loads
     startGame();
 </script>

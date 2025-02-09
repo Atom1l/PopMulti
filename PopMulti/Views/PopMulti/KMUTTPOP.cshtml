@@ -62,10 +62,10 @@
     };
 
     // Handle KMUTT button click
-    buttonKmutt.addEventListener('click', function (e) {
+    const handleScoreUpdate = (e) => {
         e.preventDefault();
 
-        if (!isGameActive) return; // Ignore clicks if the game is not active
+        if (!isGameActive) return; // Ignore if the game is not active
 
         // Send a POST request to update the score for KMUTT
         fetch('@Url.Action("KMUTTPOP", "PopMulti")', {
@@ -73,7 +73,14 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ university: "KMUTT", score: 1 })
         }).catch(error => console.error('Error:', error));
-    });
+    };
+
+    // Add event listeners
+    if ('ontouchstart' in window) {
+        buttonKmutt.addEventListener('touchstart', handleScoreUpdate);
+    } else {
+        buttonKmutt.addEventListener('click', handleScoreUpdate);
+    }
     // Start the game automatically when the page loads
     startGame();
 </script>

@@ -4,15 +4,15 @@
     string winningUniversity = "";
 
     // Check for the winner
-    if (Model.KMUTT >= 50)
+    if (Model.KMUTT >= 20)
     {
         winningUniversity = "KMUTT";
     }
-    else if (Model.SU >= 50)
+    else if (Model.SU >= 20)
     {
         winningUniversity = "SU";
     }
-    else if (Model.SWU >= 50)
+    else if (Model.SWU >= 20)
     {
         winningUniversity = "SWU";
     }
@@ -31,7 +31,7 @@
                        font-size: 2.5rem; /* Adjust the font size */
                        margin-top: 20px;">
                 <h2>The Winner is from</h2>
-                <h1>@winningUniversity</h1> <!-- Display the winner name in larger font -->
+                <h1 class="text-decoration-underline">@winningUniversity</h1> <!-- Display the winner name in larger font -->
             </div>
         }
 

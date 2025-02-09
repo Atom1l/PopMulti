@@ -15,6 +15,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script> <!--AJAX for no refreshing the page-->
 <script src="/js/pop-su.js" asp-append-version="true"></script> <!-- For Popcat animation -->
 <script>
+    const thescorelimit = 20;
+
     // Setup SignalR connection
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/scoreHub") // Match the hub route in your server setup
@@ -34,15 +36,8 @@
 
     // Listen for score limit reached event
     connection.on("ScoreLimitReached", function (university) {
-    console.log(`${university} score limit reached! Redirecting...`);
-    // Check for any university reaching the limit and redirect
-    if (university === "KMUTT") {
-        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for KMUTT
-    } else if (university === "SU") {
-        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for UniversityA
-    } else if (university === "SWU") {
-        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for UniversityB
-    }
+        console.log(`${university} score limit reached! Redirecting all pages...`);
+        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page
     });
 
     const buttonSU = document.getElementById('btn-pop-su');
@@ -60,18 +55,24 @@
     };
 
     // Handle SU button click
-    buttonSU.addEventListener('click', function (e) {
+    const handleScoreUpdate = (e) => {
         e.preventDefault();
 
-        if (!isGameActive) return; // Ignore clicks if the game is not active
+        if (!isGameActive) return; // Ignore if the game is not active
 
-        // Send a POST request to update the score for SU
+        // Send a POST request to update the score for KMUTT
         fetch('@Url.Action("SUPOP", "PopMulti")', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ university: "SU", score: 1 })
         }).catch(error => console.error('Error:', error));
-    });
+    };
+    // Add event listeners
+    if ('ontouchstart' in window) {
+        buttonSU.addEventListener('touchstart', handleScoreUpdate);
+    } else {
+        buttonSU.addEventListener('click', handleScoreUpdate);
+    }
     // Start the game automatically when the page loads
     startGame();
 </script>
