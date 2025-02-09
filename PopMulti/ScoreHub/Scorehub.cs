@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 public class ScoreHub : Hub
 {
-    private const int ScoreLimit = 500;
+    private const int ScoreLimit = 20;
     private static ConcurrentDictionary<string, int> Scores = new ConcurrentDictionary<string, int>();
 
     public async Task UpdateScore(string university, int newScore)
