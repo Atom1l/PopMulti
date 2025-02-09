@@ -16,49 +16,78 @@
 <script src="/js/pop-kmutt.js" asp-append-version="true"></script> <!-- For Popcat animation -->
 <!-- Script working with SignalR for real time change the score to many devices -->
 <script>
+    const scorelimit = 20;
     // Setup SignalR connection
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/scoreHub")
         .build();
 
-    // Start the connection
+    const checkScore = async (university) => {
+        try {
+            const score = await connection.invoke("GetScore", university);
+            // Update the score display if needed
+            if (university === "KMUTT") {
+                document.querySelector("#score-text").textContent = score;
+                console.log(`Current score for ${university}: ${score}`);
+                if(score > scorelimit){
+                    window.location.href = '@Url.Action("PopResult", "PopMulti")';
+                }
+            }
+            if (university === "SU") {
+                console.log(`Current score for ${university}: ${score}`);
+                if(score > scorelimit){
+                    window.location.href = '@Url.Action("PopResult", "PopMulti")';
+                }
+            }
+            if (university === "SWU") {
+                console.log(`Current score for ${university}: ${score}`);
+                if(score > scorelimit){
+                    window.location.href = '@Url.Action("PopResult", "PopMulti")';
+                }
+            }
+            
+        } catch (err) {
+            console.error("Error fetching score:", err);
+        }
+    };
+
+    // Start the SignalR connection
     connection.start()
-        .then(() => console.log("Connected to SignalR"))
+        .then(() => {
+            console.log("Connected to SignalR");
+            checkScore("KMUTT"); // Check and log the initial score for KMUTT
+            checkScore("SU");
+            checkScore("SWU");
+        })
         .catch(err => console.error("SignalR Connection Error: ", err));
 
-    // Listen for score updates meaning the real-time score update for all device using this page at the moment
+    // Listen for real-time score updates
     connection.on("ReceiveScoreUpdate", function (university, newScore) {
+        console.log(`Score update received for ${university}: ${newScore}`);
         if (university === "KMUTT") {
             document.querySelector("#score-text").textContent = newScore;
         }
     });
 
-    // Listen for score limit 
+    // Listen for when a score limit is reached
     connection.on("ScoreLimitReached", function (university) {
-    console.log(`${university} score limit reached! Redirecting...`);
-    // Check for any university reaching the limit and redirect
-    // Need to have all of the universities bc to make sure that every page will navigate to the result when score is reach the limit
-    if (university === "KMUTT") {
-        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for KMUTT
-    } else if (university === "SU") {
-        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for SU
-    } else if (university === "SWU") {
-        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for SWU
-    }
+        console.log(`${university} score limit reached! Redirecting...`);
+        window.location.href = '@Url.Action("PopResult", "PopMulti")';
     });
 
     const buttonKmutt = document.getElementById('btn-pop-kmutt');
-
     let isGameActive = false;
 
     const startGame = () => {
         isGameActive = true;
         buttonKmutt.disabled = false;
+        console.log("Game started! KMUTT button enabled.");
     };
 
     const endGame = () => {
         isGameActive = false;
         buttonKmutt.disabled = true;
+        console.log("Game ended! KMUTT button disabled.");
     };
 
     // Handle KMUTT button click
@@ -67,6 +96,7 @@
 
         if (!isGameActive) return; // Ignore if the game is not active
 
+        console.log("KMUTT button clicked, updating score...");
         // Send a POST request to update the score for KMUTT
         fetch('@Url.Action("KMUTTPOP", "PopMulti")', {
             method: 'POST',
@@ -75,12 +105,14 @@
         }).catch(error => console.error('Error:', error));
     };
 
-    // Add event listeners
+    // Add event listeners for button click/touch
     if ('ontouchstart' in window) {
         buttonKmutt.addEventListener('touchstart', handleScoreUpdate);
     } else {
         buttonKmutt.addEventListener('click', handleScoreUpdate);
     }
+
     // Start the game automatically when the page loads
     startGame();
 </script>
+

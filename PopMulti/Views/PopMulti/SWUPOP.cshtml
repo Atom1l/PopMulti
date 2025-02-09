@@ -18,58 +18,87 @@
 <!-- Script working with SignalR for real time change the score to many devices -->
 <!-- With the time limit and push the button script to + the score -->
 <script>
-    const thescorelimit = 20;
-    let currentScore = parseInt(document.querySelector("#score-text").textContent, 10);
+    const scorelimit = 20;
     // Setup SignalR connection
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/scoreHub") // Match the hub route in your server setup
+        .withUrl("/scoreHub")
         .build();
 
-    // Start the connection
+    const checkScore = async (university) => {
+        try {
+            const score = await connection.invoke("GetScore", university);
+            // Update the score display if needed
+            if (university === "KMUTT") {
+                console.log(`Current score for ${university}: ${score}`);
+                if(score > scorelimit){
+                    window.location.href = '@Url.Action("PopResult", "PopMulti")';
+                }
+            }
+            if (university === "SU") {    
+                console.log(`Current score for ${university}: ${score}`);
+                if(score > scorelimit){
+                    window.location.href = '@Url.Action("PopResult", "PopMulti")';
+                }
+            }
+            if (university === "SWU") {
+                document.querySelector("#score-text").textContent = score;
+                console.log(`Current score for ${university}: ${score}`);
+                if(score > scorelimit){
+                    window.location.href = '@Url.Action("PopResult", "PopMulti")';
+                }
+            }
+
+        } catch (err) {
+            console.error("Error fetching score:", err);
+        }
+    };
+
+    // Start the SignalR connection
     connection.start()
-        .then(() => console.log("Connected to SignalR"))
+        .then(() => {
+            console.log("Connected to SignalR");
+            checkScore("KMUTT"); // Check and log the initial score for KMUTT
+            checkScore("SU");
+            checkScore("SWU");
+        })
         .catch(err => console.error("SignalR Connection Error: ", err));
 
-    // Listen for score updates
+    // Listen for real-time score updates
     connection.on("ReceiveScoreUpdate", function (university, newScore) {
+        console.log(`Score update received for ${university}: ${newScore}`);
         if (university === "SWU") {
             document.querySelector("#score-text").textContent = newScore;
         }
     });
 
-    // Listen for score limit reached event
+    // Listen for when a score limit is reached
     connection.on("ScoreLimitReached", function (university) {
-    console.log(`${university} score limit reached! Redirecting...`);
-    // Check for any university reaching the limit and redirect
-    if (university === "KMUTT") {
-        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for KMUTT
-    } else if (university === "SU") {
-        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for UniversityA
-    } else if (university === "SWU") {
-        window.location.href = '@Url.Action("PopResult", "PopMulti")'; // Redirect to PopResult page for UniversityB
-    }
+        console.log(`${university} score limit reached! Redirecting...`);
+        window.location.href = '@Url.Action("PopResult", "PopMulti")';
     });
 
     const buttonSWU = document.getElementById('btn-pop-swu');
-
     let isGameActive = false;
 
     const startGame = () => {
         isGameActive = true;
         buttonSWU.disabled = false;
+        console.log("Game started! SWU button enabled.");
     };
 
     const endGame = () => {
         isGameActive = false;
         buttonSWU.disabled = true;
+        console.log("Game ended! SWU button disabled.");
     };
 
-    // Handle SWU button click
+    // Handle KMUTT button click
     const handleScoreUpdate = (e) => {
         e.preventDefault();
 
         if (!isGameActive) return; // Ignore if the game is not active
 
+        console.log("SWU button clicked, updating score...");
         // Send a POST request to update the score for KMUTT
         fetch('@Url.Action("SWUPOP", "PopMulti")', {
             method: 'POST',
@@ -77,12 +106,14 @@
             body: JSON.stringify({ university: "SWU", score: 1 })
         }).catch(error => console.error('Error:', error));
     };
-    // Add event listeners
+
+    // Add event listeners for button click/touch
     if ('ontouchstart' in window) {
         buttonSWU.addEventListener('touchstart', handleScoreUpdate);
     } else {
         buttonSWU.addEventListener('click', handleScoreUpdate);
     }
+
     // Start the game automatically when the page loads
     startGame();
 </script>
