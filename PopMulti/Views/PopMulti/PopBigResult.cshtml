@@ -93,7 +93,7 @@
         .then(() => console.log("Connected to SignalR"))
         .catch(err => console.error("SignalR Connection Error: ", err));
 
-    connection.on("ReceiveScoreUpdate", function (university, newScore) {
+        connection.on("ReceiveScoreUpdate", function (university, newScore) {
         if (university === "KMUTT") {
             mychart.data.datasets[0].data[0] = newScore;
         } else if (university === "SU") {
@@ -101,6 +101,14 @@
         } else if (university === "SWU") {
             mychart.data.datasets[0].data[2] = newScore;
         }
+
         mychart.update();
+
+        // ตรวจสอบคะแนน ถ้ามีมหาวิทยาลัยใดถึงลิมิต ให้เปลี่ยนหน้าไปที่ PopResult
+        if (mychart.data.datasets[0].data[0] >= 20 ||
+            mychart.data.datasets[0].data[1] >= 20 ||
+            mychart.data.datasets[0].data[2] >= 20) {
+            window.location.href = "/PopMulti/PopResult";
+        }
     });
 </script>

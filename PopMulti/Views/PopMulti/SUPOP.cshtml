@@ -7,7 +7,7 @@
 <div class="su-bg">
     <div class="container-fluid section-popup d-flex flex-column justify-content-center align-items-center">
         <div class="uni-text su kanit-bold">SU</div> <!-- Changed KMUTT to SU -->
-        <div class="score-text kanit-bold">Score :<span id="score-text" class="score-text kanit-regular"> @Model.SU.ToString()</span></div> <!-- Changed KMUTT to SU -->
+        <div class="score-text kanit-bold">Score : <span id="score-text" class="kanit-regular">@Model.SU.ToString()</span> / 20</div>
         <form class="pop-form" asp-action="SUPOP" method="post"><button id="btn-pop-su" name="subtn"><img id="pop-su-multi" class="img-fluid" src="/pic/ICT1.png" alt="pop-closed" /></button></form> <!-- Changed button id to btn-pop-su -->
     </div>
 </div>
