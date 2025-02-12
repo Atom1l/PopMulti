@@ -7,7 +7,7 @@
 <div class="su-bg">
     <div class="container-fluid section-popup d-flex flex-column justify-content-center align-items-center">
         <div class="uni-text su kanit-bold">SU</div> <!-- Changed KMUTT to SU -->
-        <div class="score-text kanit-bold">Score : <span id="score-text" class="kanit-regular">@Model.SU.ToString()</span> / 20</div>
+        <div class="score-text kanit-bold">Score : <span id="score-text" class="kanit-regular">@Model.SU.ToString()</span> <span class="kanit-regular">/ 10000</span></div>
         <form class="pop-form" asp-action="SUPOP" method="post"><button id="btn-pop-su" name="subtn"><img id="pop-su-multi" class="img-fluid" src="/pic/ICT1.png" alt="pop-closed" /></button></form> <!-- Changed button id to btn-pop-su -->
     </div>
 </div>
@@ -15,7 +15,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script> <!--AJAX for no refreshing the page-->
 <script src="/js/pop-su.js" asp-append-version="true"></script> <!-- For Popcat animation -->
 <script>
-    const scorelimit = 20;
+    const scorelimit = 10000;
     // Setup SignalR connection
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/scoreHub")
@@ -27,20 +27,20 @@
             // Update the score display if needed
             if (university === "KMUTT") {
                 console.log(`Current score for ${university}: ${score}`);
-                if(score > scorelimit){
+                if(score >= scorelimit){
                     window.location.href = '@Url.Action("PopResult", "PopMulti")';
                 }
             }
             if (university === "SU") {
                 document.querySelector("#score-text").textContent = score;
                 console.log(`Current score for ${university}: ${score}`);
-                if(score > scorelimit){
+                if(score >= scorelimit){
                     window.location.href = '@Url.Action("PopResult", "PopMulti")';
                 }
             }
             if (university === "SWU") {
                 console.log(`Current score for ${university}: ${score}`);
-                if(score > scorelimit){
+                if(score >= scorelimit){
                     window.location.href = '@Url.Action("PopResult", "PopMulti")';
                 }
             }

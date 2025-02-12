@@ -322,18 +322,39 @@ html, body {
     animation: Pop-up 1.5s ease-in-out;
 }
 .result-box{
-    width: 350px;
+    position:relative;
+    /*width: 350px;*/
+    width:85%;
+    height: 85%;
+    max-width:1500px;
     padding: 25px;
-    border: solid 4px black;
+    
 }
-.canvas{
-    transition: 1.5s ease-in-out;
+.canvasbig {
+    transition: 0.5s ease-in-out;
+}
+.canvas {
+    position: relative;
+    padding: 10px;
+    width: 100%;
+    max-width: 90%;
+    height: auto;
+    max-height: 550px;
+    border: solid 2px #dcdcdc;
+    transition: 0.5s ease-in-out;
 }
 .score-header-text{
+    margin-top:-10px;
+    margin-bottom:-20px;
     font-size: 4rem;
     text-align: center;
+    transition: 0.5s ease-in-out;
 }
-.kmutt-score, .su-score, .swu-score{
+.winner-message h2, .winner-message h1{
+    transition: 0.5s ease-in-out;
+}
+.kmutt-score, .su-score, .swu-score {
+    width: 95% !important;
     border-bottom: solid 1px black;
     margin: 10px 0px 10px 0px;
     padding: 0px 5px 10px 5px;
@@ -348,6 +369,185 @@ html, body {
 .swu-score {
     color: rgba(218, 33, 40, 1);
 }
+@media(max-height:970px){
+    .canvas {
+        position: relative;
+        width: 100%;
+        max-width: 90%;
+        height: auto;
+        max-height: 500px;
+    }
+}
+@media(max-height:870px) {
+    .canvas {
+        position: relative;
+        width: 100%;
+        max-width: 90%;
+        height: auto;
+        max-height: 450px;
+    }
+}
+@media(max-height:770px) {
+    .canvas {
+        position: relative;
+        width: 100%;
+        max-width: 90%;
+        height: auto;
+        max-height: 400px;
+    }
+    .score-header-text {
+        margin-top: -10px;
+        margin-bottom: -20px;
+        font-size: 3.5rem;
+        text-align: center;
+    }
+    .winner-message h2{
+        font-size: 1.5rem !important;
+    }
+    .winner-message h1 {
+        font-size: 1.8rem !important;
+    }
+}
+@media(max-height:680px) {
+    .canvas {
+        position: relative;
+        width: 100%;
+        max-width: 90%;
+        height: auto;
+        max-height: 350px;
+    }
+}
+@media(max-height:620px) {
+
+    .score-header-text {
+        margin-top: -10px;
+        margin-bottom: -25px;
+        font-size: 3.25rem;
+        text-align: center;
+    }
+
+    .winner-message h2 {
+        margin-bottom: 5px;
+        font-size: 1.3rem !important;
+    }
+
+    .winner-message h1 {
+        margin-bottom:-5px;
+        font-size: 1.5rem !important;
+    }
+}
+@media(max-height:550px) {
+    .canvas {
+        position: relative;
+        width: 100%;
+        max-width: 90%;
+        height: auto;
+        max-height: 300px;
+    }
+    .score-header-text {
+        margin-top: 0px;
+        margin-bottom: -25px;
+        font-size: 3.25rem;
+        text-align: center;
+    }
+
+    .winner-message h2 {
+        margin-bottom: 5px;
+        font-size: 1.3rem !important;
+    }
+
+    .winner-message h1 {
+        font-size: 1.5rem !important;
+    }
+}
+@media(max-height:490px) {
+    .canvas {
+        position: relative;
+        width: 100%;
+        max-width: 90%;
+        height: auto;
+        max-height: 250px;
+    }
+
+    .score-header-text {
+        margin-top: 0px;
+        margin-bottom: -25px;
+        font-size: 2.85rem;
+        text-align: center;
+    }
+
+    .winner-message h2 {
+        margin-bottom: 5px;
+        font-size: 1.2rem !important;
+    }
+
+    .winner-message h1 {
+        margin-bottom:-5px;
+        font-size: 1.3rem !important;
+    }
+}
+@media(max-height:420px) {
+    .canvas {
+        position: relative;
+        width: 100%;
+        max-width: 90%;
+        height: auto;
+        max-height: 200px;
+    }
+}
+@media(max-height:375px) {
+    .canvas {
+        position: relative;
+        width: 100%;
+        max-width: 90%;
+        height: auto;
+        max-height: 200px;
+    }
+
+    .score-header-text {
+        margin-top: 5px;
+        margin-bottom: -25px;
+        font-size: 2.55rem;
+        text-align: center;
+    }
+
+    .winner-message h2 {
+        margin-bottom: 5px;
+        font-size: 1.1rem !important;
+    }
+
+    .winner-message h1 {
+        margin-bottom: -10px;
+        font-size: 1.2rem !important;
+    }
+}
+@media(max-height:300px) {
+    .canvas {
+        position: relative;
+        width: 100%;
+        max-width: 90%;
+        height: auto;
+        max-height: 150px;
+    }
+
+    .score-header-text {
+        margin-top: 0px;
+        margin-bottom: -25px;
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    .winner-message h2 {
+        margin-bottom: 5px;
+        font-size: 1rem !important;
+    }
+
+    .winner-message h1 {
+        margin-bottom: -15px;
+        font-size: 1.1rem !important;
+    }
+}
+
 
 /*===== POP-RESET =====*/
 .resetbtn{

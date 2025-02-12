@@ -7,7 +7,7 @@
 <div class="swu-bg">
     <div class="container-fluid section-popup d-flex flex-column justify-content-center align-items-center">
         <div class="uni-text swu kanit-bold">SWU</></div>
-        <div class="score-text kanit-bold">Score : <span id="score-text" class="kanit-regular">@Model.SWU.ToString()</span> / 20</div>
+        <div class="score-text kanit-bold">Score : <span id="score-text" class="kanit-regular">@Model.SWU.ToString()</span> <span class="kanit-regular">/ 10000</span></div>
         <form class="pop-form" asp-action="SWUPOP" method="post"><button id="btn-pop-swu" name="swubtn"><img id="pop-swu-multi" class="img-fluid" src="/pic/Swu1.png" alt="pop-closed" /></button></form>
     </div>
 </div>
@@ -18,7 +18,7 @@
 <!-- Script working with SignalR for real time change the score to many devices -->
 <!-- With the time limit and push the button script to + the score -->
 <script>
-    const scorelimit = 20;
+    const scorelimit = 10000;
     // Setup SignalR connection
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/scoreHub")
@@ -30,20 +30,20 @@
             // Update the score display if needed
             if (university === "KMUTT") {
                 console.log(`Current score for ${university}: ${score}`);
-                if(score > scorelimit){
+                if(score >= scorelimit){
                     window.location.href = '@Url.Action("PopResult", "PopMulti")';
                 }
             }
             if (university === "SU") {    
                 console.log(`Current score for ${university}: ${score}`);
-                if(score > scorelimit){
+                if(score >= scorelimit){
                     window.location.href = '@Url.Action("PopResult", "PopMulti")';
                 }
             }
             if (university === "SWU") {
                 document.querySelector("#score-text").textContent = score;
                 console.log(`Current score for ${university}: ${score}`);
-                if(score > scorelimit){
+                if(score >= scorelimit){
                     window.location.href = '@Url.Action("PopResult", "PopMulti")';
                 }
             }

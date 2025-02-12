@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="/css/PopMulti.css" asp-append-version="true" />
 
 <div class="section-popup d-flex justify-content-center align-items-center">
-    <canvas class="canvas p-3" id="bar"></canvas>
+    <canvas class="canvasbig p-3" id="bar"></canvas>
 </div>
 
 <!-- Script for Chart.js -->
@@ -70,9 +70,9 @@
                 },
                 y: {
                     beginAtZero: true, // ให้กราฟเริ่มจาก 0
-                    max: 500,           // กำหนดค่าสูงสุดตรงกับ ScoreLimit
+                    max: 10000,           // กำหนดค่าสูงสุดตรงกับ ScoreLimit
                     ticks: {
-                        stepSize: 100,   // ให้แสดงค่าขั้นบันไดทีละ 5 เพื่อดูง่ายขึ้น
+                        stepSize: 1000,   // ให้แสดงค่าขั้นบันไดทีละ 5 เพื่อดูง่ายขึ้น
                         font: {
                             size: function (context) {
                                 let width = context.chart.width;
@@ -105,9 +105,7 @@
         mychart.update();
 
         // ตรวจสอบคะแนน ถ้ามีมหาวิทยาลัยใดถึงลิมิต ให้เปลี่ยนหน้าไปที่ PopResult
-        if (mychart.data.datasets[0].data[0] >= 20 ||
-            mychart.data.datasets[0].data[1] >= 20 ||
-            mychart.data.datasets[0].data[2] >= 20) {
+        if (mychart.data.datasets[0].data[0] >= 10000 || mychart.data.datasets[0].data[1] >= 10000 || mychart.data.datasets[0].data[2] >= 10000) {
             window.location.href = "/PopMulti/PopResult";
         }
     });

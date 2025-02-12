@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 public class ScoreHub : Hub
 {
     private readonly PopMultiDBContext _db;
-    private const int ScoreLimit = 20;
+    private const int ScoreLimit = 10000;
 
     public ScoreHub(PopMultiDBContext dbContext)
     {

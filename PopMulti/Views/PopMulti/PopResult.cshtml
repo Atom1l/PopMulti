@@ -4,15 +4,15 @@
     string winningUniversity = "";
 
     // Check for the winner
-    if (Model.KMUTT >= 20)
+    if (Model.KMUTT >= 10000)
     {
         winningUniversity = "KMUTT";
     }
-    else if (Model.SU >= 20)
+    else if (Model.SU >= 10000)
     {
         winningUniversity = "SU";
     }
-    else if (Model.SWU >= 20)
+    else if (Model.SWU >= 10000)
     {
         winningUniversity = "SWU";
     }
@@ -20,25 +20,26 @@
 <link rel="stylesheet" href="/css/PopMulti.css" asp-append-version="true" />
 
 <div class="section-resultbox d-flex justify-content-center align-items-center gap-5">
-    <div class="result-box d-flex flex-column justify-content-center align-items-center text-start shadow">
+    <div class="result-box d-flex flex-column justify-content-center align-items-center text-start">
         <div class="score-header-text text-center kanit-bold">Score</div>
 
         <!-- Display the winner with different colors and larger font size -->
         @if (!string.IsNullOrEmpty(winningUniversity))
         {
             <div class="winner-message text-center kanit-bold"
-                 style="color: @(winningUniversity == "KMUTT" ? "rgba(240,78,35,1)" : winningUniversity == "SU" ? "rgba(0,116,104,1)" : "rgba(218,33,39,1)");
-                       font-size: 2.5rem; /* Adjust the font size */
-                       margin-top: 20px;">
-                <h2>The Winner is from</h2>
+                style="color: @(winningUniversity == "KMUTT" ? "rgba(240,78,35,1)" : winningUniversity == "SU" ? "rgba(0,116,104,1)" : "rgba(218,33,39,1)");
+                font-size: 2.5rem; margin-top: 20px;">
+
+                <h2 class="text-black">The Winner is from</h2>
                 <h1 class="text-decoration-underline">@winningUniversity</h1> <!-- Display the winner name in larger font -->
+
             </div>
         }
 
-        <canvas class="canvas my-4 h-25 border border-dark" id="bar"></canvas>
-        <div class="kmutt-score w-100 d-flex flex-row justify-content-between align-items-center kanit-regular"><span class="kanit-bold">KMUTT</span> <span>@Model.KMUTT</span></div>
+        <canvas class="canvas my-4" id="bar"></canvas>
+        @* <div class="kmutt-score w-100 d-flex flex-row justify-content-between align-items-center kanit-regular"><span class="kanit-bold">KMUTT</span> <span>@Model.KMUTT</span></div>
         <div class="su-score w-100 d-flex flex-row justify-content-between align-items-center kanit-regular"><span class="kanit-bold">SU</span> <span>@Model.SU</span></div>
-        <div class="swu-score w-100 d-flex flex-row justify-content-between align-items-center kanit-regular"><span class="kanit-bold">SWU</span> <span>@Model.SWU</span></div>
+        <div class="swu-score w-100 d-flex flex-row justify-content-between align-items-center kanit-regular"><span class="kanit-bold">SWU</span> <span>@Model.SWU</span></div> *@
     </div>
 </div>
 
@@ -65,14 +66,35 @@
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false, // Important to make it responsive within the container
             plugins: {
                 legend: {
                     display: true,
                 }
             },
             scales: {
+                x: {
+                    ticks: {
+                        font: {
+                            size: function (context) {
+                                let width = context.chart.width;
+                                return width < 500 ? 10 : 26;
+                            }
+                        }
+                    }
+                },
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    max: 10000,           // กำหนดค่าสูงสุดตรงกับ ScoreLimit
+                    ticks: {
+                        stepSize: 2500,   // ให้แสดงค่าขั้นบันไดทีละ 5 เพื่อดูง่ายขึ้น
+                        font: {
+                            size: function (context) {
+                                let width = context.chart.width;
+                                return width < 500 ? 10 : 26;
+                            }
+                        }
+                    }
                 }
             }
         }
